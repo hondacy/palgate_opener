@@ -12,7 +12,7 @@ function jsonResponse(payload, status = 200) {
 }
 
 function getAuthorizationSecret(request, env) {
-  return true; // --- DISABLED AUTH FOR TESTING ---
+  //return true; // --- DISABLED AUTH FOR TESTING ---
   const headerValue = request.headers.get(SECRET_HEADER) || request.headers.get('authorization');
   const secret = env.PALGATE_WORKER_SECRET;
   if (!secret) return false;
