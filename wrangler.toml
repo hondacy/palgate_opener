@@ -1,0 +1,7 @@
+name = "palgate-opener-token-worker"
+# account_id = "your-account-id" # uncomment and set before deploy if your Wrangler config requires it
+main = "src/index.js"
+compatibility_date = "2026-01-01"
+
+[build]
+upload.format = "modules"

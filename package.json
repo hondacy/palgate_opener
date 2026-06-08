@@ -1,0 +1,12 @@
+{
+  "name": "palgate-opener-worker",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/wrangler": "^3.4.0"
+  }
+}

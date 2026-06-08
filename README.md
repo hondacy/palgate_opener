@@ -65,3 +65,8 @@ Session generator adopted from: https://github.com/DonutByte/pylgate/tree/main
     ```
 
 4. you can host the script online and access via url!
+
+## Cloudflare Worker deployment
+
+This repository includes a ready-to-deploy Cloudflare Worker package.
+Use `CLOUDFLARE_WORKER_DEPLOY.md` for setup, local testing, and deployment instructions.
