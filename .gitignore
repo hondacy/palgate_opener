@@ -219,3 +219,4 @@ __marimo__/
 generate_linked_device_session_token.py
 .vscode/launch.json
 .vscode/settings.json
+node_modules/

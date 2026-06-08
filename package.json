@@ -7,6 +7,6 @@
     "deploy": "wrangler deploy"
   },
   "devDependencies": {
-    "@cloudflare/wrangler": "^3.4.0"
+    "wrangler": "^4.98.0"
   }
 }
