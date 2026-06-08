@@ -57,7 +57,7 @@ export default {
     }
 
     if (!getAuthorizationSecret(request, env)) {
-      return new Response('Unauthorized', { status: 401 });
+      return new Response('Unauthorized By x-api-key', { status: 401 });
     }
 
     const sessionToken = env.PALGATE_SESSION_TOKEN;
