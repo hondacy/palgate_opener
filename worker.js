@@ -1,75 +1,46 @@
+import { generateToken as generatePalgateToken } from "./generate_token_worker.js";
+
 /**
  * Cloudflare Worker for Palgate Gate Opener
  * 
  * Environment Variables Required:
- * - PHONE_NUMBER: Your phone number (as string, e.g., "972521234567")
- * - SESSION_TOKEN: Session token as hex string (e.g., "6b3fa357sc67f3fa357sc67fa4")
- * - TOKEN_TYPE: Token type (1 for PRIMARY)
- * - DEVICE_ID: Gate device ID (e.g., "4G600123456")
+ * - PALGATE_PHONE_NUMBER: Your phone number (as string, e.g., "972521234567")
+ * - PALGATE_SESSION_TOKEN: Session token as hex string (16 bytes, e.g., "6b3fa357sc67f3fa357sc67fa4")
+ * - PALGATE_TOKEN_TYPE: Token type (PRIMARY / SECONDARY / SMS, or 1 / 2 / 0)
+ * - PALGATE_DEVICE_ID: Gate device ID (e.g., "4G600123456")
  */
 
 const ANDROID_USER_AGENT = "okhttp/4.9.3";
 const BASE_URL = "https://api1.pal-es.com/v1/";
 
-/**
- * Convert hex string to Uint8Array
- */
-function hexToBytes(hex) {
-  const bytes = new Uint8Array(hex.length / 2);
-  for (let i = 0; i < hex.length; i += 2) {
-    bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+function normalizeTokenType(tokenType) {
+  if (tokenType === undefined || tokenType === null || tokenType === "") {
+    return "PRIMARY";
   }
-  return bytes;
-}
-
-/**
- * Convert Uint8Array to hex string
- */
-function bytesToHex(bytes) {
-  return Array.from(bytes)
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('');
-}
-
-/**
- * Generate token using HMAC-SHA256
- * Equivalent to pylgate.generate_token()
- */
-async function generateToken(sessionToken, phoneNumber, tokenType) {
-  // Prepare the message: phone number + token type
-  const message = new TextEncoder().encode(
-    `${phoneNumber}:${tokenType}`
-  );
-
-  // Generate HMAC-SHA256
-  const key = await crypto.subtle.importKey(
-    "raw",
-    sessionToken,
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-
-  const signature = await crypto.subtle.sign(
-    "HMAC",
-    key,
-    message
-  );
-
-  return bytesToHex(new Uint8Array(signature));
+  const type = String(tokenType).trim().toUpperCase();
+  if (type === "0" || type === "SMS") return "SMS";
+  if (type === "1" || type === "PRIMARY") return "PRIMARY";
+  if (type === "2" || type === "SECONDARY") return "SECONDARY";
+  throw new Error(`Unsupported PALGATE_TOKEN_TYPE: ${tokenType}`);
 }
 
 /**
  * Get authenticated request headers
  */
-async function getAuthenticatedHeaders(env) {
+function getAuthenticatedHeaders(env) {
   const sessionTokenHex = env.PALGATE_SESSION_TOKEN;
   const phoneNumber = env.PALGATE_PHONE_NUMBER;
-  const tokenType = env.PALGATE_TOKEN_TYPE;
+  const tokenType = normalizeTokenType(env.PALGATE_TOKEN_TYPE);
 
-  const sessionToken = hexToBytes(sessionTokenHex);
-  const derivedToken = await generateToken(
-    sessionToken,
+  if (!sessionTokenHex) {
+    throw new Error('Missing PALGATE_SESSION_TOKEN environment variable');
+  }
+  if (!phoneNumber) {
+    throw new Error('Missing PALGATE_PHONE_NUMBER environment variable');
+  }
+
+  const derivedToken = generatePalgateToken(
+    sessionTokenHex,
     phoneNumber,
     tokenType
   );
