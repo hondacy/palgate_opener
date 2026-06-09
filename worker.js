@@ -33,7 +33,7 @@ function getAuthenticatedHeaders(env) {
   const tokenType = normalizeTokenType(env.PALGATE_TOKEN_TYPE ?? env.TOKEN_TYPE);
 
   // DEBUG:
-  console.log("Session Token (hex):", sessionTokenHex);
+  //console.log("Session Token (hex):", sessionTokenHex);
   console.log("Phone Number:", phoneNumber);
   console.log("Token Type:", tokenType);
   
@@ -76,6 +76,9 @@ async function checkToken(env) {
   const headers = await getAuthenticatedHeaders(env);
   const ts = Math.floor(Date.now() / 1000);
   
+  // DEBUG:
+  console.log("headers:", headers);
+ 
   const response = await fetch(
     `${BASE_URL}bt/user/check-token?ts=${ts}&ts_diff=0`,
     { headers }
