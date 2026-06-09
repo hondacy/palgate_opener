@@ -77,7 +77,7 @@ async function checkToken(env) {
   const ts = Math.floor(Date.now() / 1000);
   
   // DEBUG:
-  console.log("headers:", headers);
+  console.log("headers:", headers["X-Bt-Token"]);
  
   const response = await fetch(
     `${BASE_URL}bt/user/check-token?ts=${ts}&ts_diff=0`,
