@@ -28,15 +28,20 @@ function normalizeTokenType(tokenType) {
  * Get authenticated request headers
  */
 function getAuthenticatedHeaders(env) {
-  const sessionTokenHex = env.PALGATE_SESSION_TOKEN;
-  const phoneNumber = env.PALGATE_PHONE_NUMBER;
-  const tokenType = normalizeTokenType(env.PALGATE_TOKEN_TYPE);
+  const sessionTokenHex = env.PALGATE_SESSION_TOKEN || env.SESSION_TOKEN;
+  const phoneNumber = env.PALGATE_PHONE_NUMBER || env.PHONE_NUMBER;
+  const tokenType = normalizeTokenType(env.PALGATE_TOKEN_TYPE ?? env.TOKEN_TYPE);
 
+  // DEBUG:
+  //console.log("Session Token (hex):", sessionTokenHex);
+  console.log("Phone Number:", phoneNumber);
+  console.log("Token Type:", tokenType);
+  
   if (!sessionTokenHex) {
-    throw new Error('Missing PALGATE_SESSION_TOKEN environment variable');
+    throw new Error('Missing PALGATE_SESSION_TOKEN or SESSION_TOKEN environment variable');
   }
   if (!phoneNumber) {
-    throw new Error('Missing PALGATE_PHONE_NUMBER environment variable');
+    throw new Error('Missing PALGATE_PHONE_NUMBER or PHONE_NUMBER environment variable');
   }
 
   const derivedToken = generatePalgateToken(
