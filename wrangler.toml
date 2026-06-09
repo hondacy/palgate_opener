@@ -1,4 +1,4 @@
-name = "palgate-opener-guid-dsfsa6213gfd9854hjkgre87213gfry78d5"
+name = "palgate-opener-guid-dsfsa6213gfd9854hjkgre87213gfry78"
 # account_id = "your-account-id" # uncomment and set before deploy if your Wrangler config requires it
 main = "worker.js"
 compatibility_date = "2026-01-01"
