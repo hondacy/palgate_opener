@@ -63,9 +63,9 @@ async function generateToken(sessionToken, phoneNumber, tokenType) {
  * Get authenticated request headers
  */
 async function getAuthenticatedHeaders(env) {
-  const sessionTokenHex = env.SESSION_TOKEN;
-  const phoneNumber = env.PHONE_NUMBER;
-  const tokenType = env.TOKEN_TYPE;
+  const sessionTokenHex = env.PALGATE_SESSION_TOKEN;
+  const phoneNumber = env.PALGATE_PHONE_NUMBER;
+  const tokenType = env.PALGATE_TOKEN_TYPE;
 
   const sessionToken = hexToBytes(sessionTokenHex);
   const derivedToken = await generateToken(
@@ -157,7 +157,7 @@ export default {
     try {
       // Route: GET /open-gate?deviceId=DEVICE_ID
       if (pathname === "/open-gate") {
-        const deviceId = url.searchParams.get("deviceId") || env.DEVICE_ID;
+        const deviceId = url.searchParams.get("deviceId") || env.PALGATE_DEVICE_ID;
         if (!deviceId) {
           return new Response(
             JSON.stringify({ error: "Missing deviceId parameter" }),
