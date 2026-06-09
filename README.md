@@ -70,3 +70,12 @@ Session generator adopted from: https://github.com/DonutByte/pylgate/tree/main
 
 This repository includes a ready-to-deploy Cloudflare Worker package.
 Use `CLOUDFLARE_WORKER_DEPLOY.md` for setup, local testing, and deployment instructions.
+
+## Debuging Palgate API
+for debuging, try using the derived_token:
+
+YOUR_DERIVED_TOKEN = {From debuging the helpers.generate_token}
+curl -X GET \
+  'https://api1.pal-es.com/v1/bt/devices' \
+  -H 'X-Bt-Token: YOUR_DERIVED_TOKEN' \
+  -H 'Content-Type: application/json'
