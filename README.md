@@ -77,5 +77,8 @@ for debuging, try using the derived_token:
 YOUR_DERIVED_TOKEN = {From debuging the helpers.generate_token}
 curl -X GET \
   'https://api1.pal-es.com/v1/bt/devices' \
-  -H 'X-Bt-Token: YOUR_DERIVED_TOKEN' \
+  -H 'X-Bt-Token: $YOUR_DERIVED_TOKEN' \
   -H 'Content-Type: application/json'
+
+  On Windows:
+  curl -X GET  "https://api1.pal-es.com/v1/bt/devices" -H "Content-Type: application/json"  -H "X-Bt-Token: 1100E2FEFEDBA..."
